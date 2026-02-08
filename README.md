@@ -331,7 +331,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👨‍💻 Author
 
-Teboho Mokgosi - [Your GitHub](https://github.com/SirTebz)
+Teboho Mokgosi - [GitHub](https://github.com/SirTebz)
 
 ## 🙏 Acknowledgments
 
@@ -340,13 +340,7 @@ Teboho Mokgosi - [Your GitHub](https://github.com/SirTebz)
 - Bootstrap Team
 - Azure Team
 
-## 📞 Support
-
-For issues and questions:
-- Create an issue on GitHub
-- Email: your.email@example.com
-
 ---
 
-**⭐ If you found this project helpful, please consider giving it a star!**
+⭐
 
