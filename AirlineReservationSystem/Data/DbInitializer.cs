@@ -1,0 +1,204 @@
+﻿using AirlineReservationSystem.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace AirlineReservationSystem.Data
+{
+    public static class DbInitializer
+    {
+        public static async Task Initialize(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
+        {
+            // Ensure database is created
+            await context.Database.MigrateAsync();
+
+            // Seed Roles
+            if (!await roleManager.RoleExistsAsync("Admin"))
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if (!await roleManager.RoleExistsAsync("User"))
+            {
+                await roleManager.CreateAsync(new IdentityRole("User"));
+            }
+
+            // Seed Admin User
+            if (await userManager.FindByEmailAsync("admin@airline.com") == null)
+            {
+                var adminUser = new ApplicationUser
+                {
+                    UserName = "admin@airline.com",
+                    Email = "admin@airline.com",
+                    FirstName = "Admin",
+                    LastName = "User",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(adminUser, "Admin@123");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
+            }
+
+            // Seed Regular User
+            if (await userManager.FindByEmailAsync("user@airline.com") == null)
+            {
+                var regularUser = new ApplicationUser
+                {
+                    UserName = "user@airline.com",
+                    Email = "user@airline.com",
+                    FirstName = "John",
+                    LastName = "Doe",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(regularUser, "User@123");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(regularUser, "User");
+                }
+            }
+
+            // Seed Flights
+            if (!context.Flights.Any())
+            {
+                var flights = new List<Flight>
+                {
+                    new Flight
+                    {
+                        FlightNumber = "AA101",
+                        Origin = "Cape Town",
+                        Destination = "Johannesburg",
+                        DepartureTime = DateTime.Now.AddDays(5).Date.AddHours(8),
+                        ArrivalTime = DateTime.Now.AddDays(5).Date.AddHours(14),
+                        Price = 1299.99m,
+                        TotalSeats = 180,
+                        AircraftType = "SAA 737",
+                        Description = "Direct flight from CPT to JHB",
+                        IsActive = true
+                    },
+                    new Flight
+                    {
+                        FlightNumber = "UA202",
+                        Origin = "Johannesburg",
+                        Destination = "Cape Town",
+                        DepartureTime = DateTime.Now.AddDays(7).Date.AddHours(10),
+                        ArrivalTime = DateTime.Now.AddDays(7).Date.AddHours(14),
+                        Price = 1249.99m,
+                        TotalSeats = 150,
+                        AircraftType = "SAA A320",
+                        Description = "Non-stop from JHB to CPT",
+                        IsActive = true
+                    },
+                    new Flight
+                    {
+                        FlightNumber = "DL303",
+                        Origin = "Bloemfontein",
+                        Destination = "Durban",
+                        DepartureTime = DateTime.Now.AddDays(10).Date.AddHours(6),
+                        ArrivalTime = DateTime.Now.AddDays(10).Date.AddHours(11),
+                        Price = 1349.99m,
+                        TotalSeats = 200,
+                        AircraftType = "FlySafair 757",
+                        Description = "Morning flight from BLM to DBN",
+                        IsActive = true
+                    },
+                    new Flight
+                    {
+                        FlightNumber = "SW404",
+                        Origin = "Durban",
+                        Destination = "Johannesburg",
+                        DepartureTime = DateTime.Now.AddDays(3).Date.AddHours(15),
+                        ArrivalTime = DateTime.Now.AddDays(3).Date.AddHours(17),
+                        Price = 1179.99m,
+                        TotalSeats = 140,
+                        AircraftType = "AirLink 737",
+                        Description = "Afternoon service from DBN to JHB",
+                        IsActive = true
+                    },
+                    new Flight
+                    {
+                        FlightNumber = "BA505",
+                        Origin = "Durban",
+                        Destination = "Cape Town",
+                        DepartureTime = DateTime.Now.AddDays(14).Date.AddHours(9),
+                        ArrivalTime = DateTime.Now.AddDays(14).Date.AddHours(15),
+                        Price = 2399.99m,
+                        TotalSeats = 160,
+                        AircraftType = "FlySafair A321",
+                        Description = "Cross-country flight from DBN to CPT",
+                        IsActive = true
+                    }
+                };
+
+                context.Flights.AddRange(flights);
+                await context.SaveChangesAsync();
+
+                // Seed Seats for each flight
+                foreach (var flight in flights)
+                {
+                    var seats = new List<Seat>();
+
+                    // First Class (rows 1-3, seats A-F)
+                    for (int row = 1; row <= 3; row++)
+                    {
+                        foreach (char col in new[] { 'A', 'B', 'C', 'D', 'E', 'F' })
+                        {
+                            seats.Add(new Seat
+                            {
+                                FlightId = flight.FlightId,
+                                SeatNumber = $"{row}{col}",
+                                SeatClass = "First",
+                                IsAvailable = true,
+                                IsWindowSeat = col == 'A' || col == 'F',
+                                IsAisleSeat = col == 'C' || col == 'D'
+                            });
+                        }
+                    }
+
+                    // Business Class (rows 4-10, seats A-F)
+                    for (int row = 4; row <= 10; row++)
+                    {
+                        foreach (char col in new[] { 'A', 'B', 'C', 'D', 'E', 'F' })
+                        {
+                            seats.Add(new Seat
+                            {
+                                FlightId = flight.FlightId,
+                                SeatNumber = $"{row}{col}",
+                                SeatClass = "Business",
+                                IsAvailable = true,
+                                IsWindowSeat = col == 'A' || col == 'F',
+                                IsAisleSeat = col == 'C' || col == 'D'
+                            });
+                        }
+                    }
+
+                    // Economy Class (remaining rows)
+                    int economyRows = (flight.TotalSeats - seats.Count) / 6;
+                    for (int row = 11; row <= 10 + economyRows; row++)
+                    {
+                        foreach (char col in new[] { 'A', 'B', 'C', 'D', 'E', 'F' })
+                        {
+                            seats.Add(new Seat
+                            {
+                                FlightId = flight.FlightId,
+                                SeatNumber = $"{row}{col}",
+                                SeatClass = "Economy",
+                                IsAvailable = true,
+                                IsWindowSeat = col == 'A' || col == 'F',
+                                IsAisleSeat = col == 'C' || col == 'D'
+                            });
+                        }
+                    }
+
+                    context.Seats.AddRange(seats.Take(flight.TotalSeats));
+                }
+
+                await context.SaveChangesAsync();
+            }
+        }
+    }
+}

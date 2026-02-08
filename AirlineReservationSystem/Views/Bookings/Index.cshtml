@@ -1,0 +1,109 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="bi bi-ticket-perforated"></i> My Bookings</h2>
+            
+            @if (!Model.Any())
+            {
+                <div class="card shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <i class="bi bi-inbox text-muted" style="font-size: 5rem;"></i>
+                        <h4 class="mt-3">No Bookings Yet</h4>
+                        <p class="text-muted">You haven't made any flight bookings yet.</p>
+                        <a asp-controller="Flights" asp-action="Index" class="btn btn-primary mt-3">
+                            <i class="bi bi-search"></i> Search Flights
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var booking in Model)
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm h-100 @(booking.Status == "Cancelled" ? "border-danger" : "")">
+                                <div class="card-header @(booking.Status == "Confirmed" ? "bg-success" : "bg-danger") text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">@booking.BookingReference</h5>
+                                        <span class="badge @(booking.Status == "Confirmed" ? "bg-light text-dark" : "bg-white text-danger")">
+                                            @booking.Status
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        @booking.Flight?.FlightNumber - @booking.Flight?.Origin to @booking.Flight?.Destination
+                                    </h5>
+                                    
+                                    <div class="mb-3">
+                                        <p class="mb-1">
+                                            <i class="bi bi-calendar"></i>
+                                            <strong>Departure:</strong> @booking.Flight?.DepartureTime.ToString("MMM dd, yyyy hh:mm tt")
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="bi bi-geo-alt"></i>
+                                            <strong>Seat:</strong> @booking.Seat?.SeatNumber (@booking.Seat?.SeatClass Class)
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="bi bi-person"></i>
+                                            <strong>Passenger:</strong> @booking.PassengerName
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="bi bi-cash"></i>
+                                            <strong>Total:</strong> <span class="text-success">$@booking.TotalPrice.ToString("N2")</span>
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2">
+                                        <a asp-action="Details" asp-route-id="@booking.BookingId" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-eye"></i> View Details
+                                        </a>
+                                        @if (booking.Status == "Confirmed" && booking.Flight?.DepartureTime > DateTime.Now)
+                                        {
+                                            <button type="button" class="btn btn-outline-danger btn-sm" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#cancelModal@(booking.BookingId)">
+                                                <i class="bi bi-x-circle"></i> Cancel Booking
+                                            </button>
+                                            
+                                            <!-- Cancel Modal -->
+                                            <div class="modal fade" id="cancelModal@(booking.BookingId)" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Cancel Booking</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to cancel this booking?
+                                                            <br /><strong>Reference: @booking.BookingReference</strong>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep It</button>
+                                                            <form asp-action="Cancel" asp-route-id="@booking.BookingId" method="post" class="d-inline">
+                                                                <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted small">
+                                    Booked on: @booking.BookingDate.ToString("MMM dd, yyyy")
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

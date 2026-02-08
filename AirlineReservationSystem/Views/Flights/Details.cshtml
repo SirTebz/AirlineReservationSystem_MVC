@@ -1,0 +1,146 @@
+@model Flight
+@{
+    ViewData["Title"] = "Flight Details";
+    var availableSeats = ViewBag.AvailableSeats as List<Seat> ?? new List<Seat>();
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <a asp-action="Index" class="btn btn-outline-secondary mb-3">
+                <i class="bi bi-arrow-left"></i> Back to Search
+            </a>
+            
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="bi bi-airplane"></i> Flight @Model.FlightNumber</h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <h2 class="text-primary">@Model.Origin</h2>
+                            <p class="text-muted">Departure</p>
+                            <h5>@Model.DepartureTime.ToString("MMM dd, yyyy")</h5>
+                            <h4>@Model.DepartureTime.ToString("hh:mm tt")</h4>
+                        </div>
+                        
+                        <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
+                            <div>
+                                <i class="bi bi-arrow-right-circle text-primary" style="font-size: 3rem;"></i>
+                                <p class="text-muted mt-2">
+                                    Duration: @((Model.ArrivalTime - Model.DepartureTime).Hours)h @((Model.ArrivalTime - Model.DepartureTime).Minutes)m
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 text-center">
+                            <h2 class="text-primary">@Model.Destination</h2>
+                            <p class="text-muted">Arrival</p>
+                            <h5>@Model.ArrivalTime.ToString("MMM dd, yyyy")</h5>
+                            <h4>@Model.ArrivalTime.ToString("hh:mm tt")</h4>
+                        </div>
+                    </div>
+                    
+                    <hr />
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5><i class="bi bi-info-circle"></i> Flight Information</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="text-muted">Aircraft:</td>
+                                    <td><strong>@Model.AircraftType</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Total Seats:</td>
+                                    <td><strong>@Model.TotalSeats</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Available Seats:</td>
+                                    <td><strong class="text-success">@Model.AvailableSeats</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Price:</td>
+                                    <td><h4 class="text-success mb-0">$@Model.Price.ToString("N2")</h4></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5><i class="bi bi-file-text"></i> Description</h5>
+                            <p>@(Model.Description ?? "Comfortable flight with excellent service.")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @if (availableSeats.Any())
+            {
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0"><i class="bi bi-grid-3x3"></i> Select Your Seat</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <span class="badge bg-primary me-2">First Class</span>
+                                <span class="badge bg-info me-2">Business</span>
+                                <span class="badge bg-secondary">Economy</span>
+                            </div>
+                        </div>
+                        
+                        @foreach (var seatClass in availableSeats.GroupBy(s => s.SeatClass))
+                        {
+                            <div class="mb-4">
+                                <h5 class="mb-3">@seatClass.Key Class</h5>
+                                <div class="row g-2">
+                                    @foreach (var seat in seatClass.Take(30))
+                                    {
+                                        <div class="col-auto">
+                                            @if (User.Identity?.IsAuthenticated == true)
+                                            {
+                                                <a asp-controller="Bookings" asp-action="Create" 
+                                                   asp-route-flightId="@Model.FlightId" 
+                                                   asp-route-seatId="@seat.SeatId"
+                                                   class="btn btn-sm @(seat.SeatClass == "First" ? "btn-primary" : seat.SeatClass == "Business" ? "btn-info" : "btn-secondary")"
+                                                   title="@(seat.IsWindowSeat ? "Window Seat" : seat.IsAisleSeat ? "Aisle Seat" : "Middle Seat")">
+                                                    @seat.SeatNumber
+                                                    @if (seat.IsWindowSeat) { <i class="bi bi-square"></i> }
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm @(seat.SeatClass == "First" ? "btn-primary" : seat.SeatClass == "Business" ? "btn-info" : "btn-secondary")" disabled>
+                                                    @seat.SeatNumber
+                                                </button>
+                                            }
+                                        </div>
+                                    }
+                                    @if (seatClass.Count() > 30)
+                                    {
+                                        <div class="col-12">
+                                            <p class="text-muted small">... and @(seatClass.Count() - 30) more seats</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        
+                        @if (User.Identity?.IsAuthenticated != true)
+                        {
+                            <div class="alert alert-info mt-3">
+                                <i class="bi bi-info-circle"></i> Please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">login</a> to select a seat and book this flight.
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning mt-4">
+                    <i class="bi bi-exclamation-triangle"></i> Sorry, no seats are currently available for this flight.
+                </div>
+            }
+        </div>
+    </div>
+</div>

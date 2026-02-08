@@ -1,0 +1,109 @@
+@model Booking
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="text-center mb-4">
+                <div class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill" style="font-size: 5rem;"></i>
+                </div>
+                <h1 class="text-success">Booking Confirmed!</h1>
+                <p class="lead">Thank you for choosing SkyWings Airlines</p>
+            </div>
+            
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Booking Reference: @Model.BookingReference</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">Flight Details</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="text-muted">Flight Number:</td>
+                                    <td><strong>@Model.Flight?.FlightNumber</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">From:</td>
+                                    <td><strong>@Model.Flight?.Origin</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">To:</td>
+                                    <td><strong>@Model.Flight?.Destination</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Departure:</td>
+                                    <td><strong>@Model.Flight?.DepartureTime.ToString("MMM dd, yyyy hh:mm tt")</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Arrival:</td>
+                                    <td><strong>@Model.Flight?.ArrivalTime.ToString("MMM dd, yyyy hh:mm tt")</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">Passenger & Seat</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="text-muted">Passenger:</td>
+                                    <td><strong>@Model.PassengerName</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Email:</td>
+                                    <td><strong>@Model.PassengerEmail</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Phone:</td>
+                                    <td><strong>@Model.PassengerPhone</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Seat:</td>
+                                    <td><strong>@Model.Seat?.SeatNumber (@Model.Seat?.SeatClass Class)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Booking Date:</td>
+                                    <td><strong>@Model.BookingDate.ToString("MMM dd, yyyy")</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <hr />
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>Status: <span class="badge bg-success">@Model.Status</span></h5>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <h4>Total Paid: <span class="text-success">$@Model.TotalPrice.ToString("N2")</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-info mt-4">
+                <h5><i class="bi bi-info-circle"></i> Important Information</h5>
+                <ul class="mb-0">
+                    <li>A confirmation email has been sent to <strong>@Model.PassengerEmail</strong></li>
+                    <li>Please arrive at the airport at least 2 hours before departure</li>
+                    <li>Keep your booking reference <strong>@Model.BookingReference</strong> handy for check-in</li>
+                    <li>You can manage your booking from "My Bookings" section</li>
+                </ul>
+            </div>
+            
+            <div class="d-grid gap-2 mt-4">
+                <a asp-action="Index" class="btn btn-primary btn-lg">
+                    <i class="bi bi-list"></i> View All My Bookings
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-house"></i> Return to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
