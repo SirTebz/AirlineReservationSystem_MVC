@@ -26,7 +26,8 @@ namespace AirlineReservationSystem.Models
         public DateTime ArrivalTime { get; set; }
 
         [Required]
-        [Range(0.01, 1000000)]
+        [Range(0.01, 10000000)]
+        [Display(Name = "Price (ZAR)")]
         public decimal Price { get; set; }
 
         [Required]

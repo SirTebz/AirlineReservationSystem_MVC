@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <h2 class="mb-4"><i class="bi bi-airplane"></i> Browse All Available Flights</h2>
-            
+
             @if (!Model.Any())
             {
                 <div class="alert alert-info">
@@ -19,7 +19,7 @@
                 <div class="mb-3">
                     <p class="text-muted">Showing @Model.Count available flight(s)</p>
                 </div>
-                
+
                 @foreach (var flight in Model)
                 {
                     <div class="card mb-3 shadow-sm hover-shadow">
@@ -29,7 +29,7 @@
                                     <h5 class="text-primary mb-0">@flight.FlightNumber</h5>
                                     <small class="text-muted">@flight.AircraftType</small>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <h4 class="mb-0">@flight.Origin</h4>
@@ -37,14 +37,14 @@
                                         <p class="text-muted mb-0">@flight.DepartureTime.ToString("hh:mm tt")</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-2 text-center">
                                     <i class="bi bi-arrow-right text-primary" style="font-size: 2rem;"></i>
                                     <p class="text-muted small mb-0">
                                         @((flight.ArrivalTime - flight.DepartureTime).Hours)h @((flight.ArrivalTime - flight.DepartureTime).Minutes)m
                                     </p>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <h4 class="mb-0">@flight.Destination</h4>
@@ -52,9 +52,9 @@
                                         <p class="text-muted mb-0">@flight.ArrivalTime.ToString("hh:mm tt")</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-2 text-end">
-                                    <h4 class="text-success mb-2">$@flight.Price.ToString("N2")</h4>
+                                    <h4 class="text-success mb-2">R @flight.Price.ToString("N2")</h4>
                                     <p class="text-muted small mb-2">
                                         <i class="bi bi-person"></i> @flight.AvailableSeats seats left
                                     </p>
@@ -75,7 +75,8 @@
     .hover-shadow {
         transition: box-shadow 0.3s ease;
     }
-    .hover-shadow:hover {
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-    }
+
+        .hover-shadow:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        }
 </style>

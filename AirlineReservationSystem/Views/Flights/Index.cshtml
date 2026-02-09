@@ -7,34 +7,34 @@
     <div class="row">
         <div class="col-lg-10 mx-auto">
             <h2 class="text-center mb-4"><i class="bi bi-search"></i> Search Flights</h2>
-            
+
             <div class="card shadow-sm">
                 <div class="card-body p-4">
                     <form asp-action="Search" method="post">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label asp-for="Origin" class="form-label">From</label>
-                                <input asp-for="Origin" class="form-control form-control-lg" placeholder="e.g., New York" />
+                                <input asp-for="Origin" class="form-control form-control-lg" placeholder="e.g., Cape Town" />
                                 <span asp-validation-for="Origin" class="text-danger"></span>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label asp-for="Destination" class="form-label">To</label>
-                                <input asp-for="Destination" class="form-control form-control-lg" placeholder="e.g., Los Angeles" />
+                                <input asp-for="Destination" class="form-control form-control-lg" placeholder="e.g., Johannesburg" />
                                 <span asp-validation-for="Destination" class="text-danger"></span>
                             </div>
-                            
+
                             <div class="col-md-8">
                                 <label asp-for="DepartureDate" class="form-label">Departure Date</label>
                                 <input asp-for="DepartureDate" type="date" class="form-control form-control-lg" />
                                 <span asp-validation-for="DepartureDate" class="text-danger"></span>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <label asp-for="Passengers" class="form-label">Passengers</label>
                                 <input asp-for="Passengers" type="number" min="1" max="9" class="form-control form-control-lg" />
                             </div>
-                            
+
                             <div class="col-12 text-center mt-4">
                                 <button type="submit" class="btn btn-primary btn-lg px-5">
                                     <i class="bi bi-search"></i> Search Flights
@@ -46,13 +46,13 @@
             </div>
         </div>
     </div>
-    
+
     @if (Model.SearchResults != null && Model.SearchResults.Any())
     {
         <div class="row mt-5">
             <div class="col-12">
                 <h3 class="mb-4">Available Flights (@Model.SearchResults.Count)</h3>
-                
+
                 @foreach (var flight in Model.SearchResults)
                 {
                     <div class="card mb-3 shadow-sm hover-shadow">
@@ -62,30 +62,30 @@
                                     <h5 class="text-primary mb-0">@flight.FlightNumber</h5>
                                     <small class="text-muted">@flight.AircraftType</small>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <h4 class="mb-0">@flight.Origin</h4>
                                         <p class="text-muted mb-0">@flight.DepartureTime.ToString("hh:mm tt")</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-2 text-center">
                                     <i class="bi bi-arrow-right text-primary" style="font-size: 2rem;"></i>
                                     <p class="text-muted small mb-0">
                                         @((flight.ArrivalTime - flight.DepartureTime).Hours)h @((flight.ArrivalTime - flight.DepartureTime).Minutes)m
                                     </p>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="text-center">
                                         <h4 class="mb-0">@flight.Destination</h4>
                                         <p class="text-muted mb-0">@flight.ArrivalTime.ToString("hh:mm tt")</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-2 text-end">
-                                    <h4 class="text-success mb-2">$@flight.Price.ToString("N2")</h4>
+                                    <h4 class="text-success mb-2">R @flight.Price.ToString("N2")</h4>
                                     <p class="text-muted small mb-2">
                                         <i class="bi bi-person"></i> @flight.AvailableSeats seats left
                                     </p>
@@ -114,7 +114,8 @@
     .hover-shadow {
         transition: box-shadow 0.3s ease;
     }
-    .hover-shadow:hover {
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-    }
+
+        .hover-shadow:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        }
 </style>

@@ -69,67 +69,67 @@ namespace AirlineReservationSystem.Data
                 {
                     new Flight
                     {
-                        FlightNumber = "AA101",
-                        Origin = "Cape Town",
-                        Destination = "Johannesburg",
-                        DepartureTime = DateTime.Now.AddDays(5).Date.AddHours(8),
-                        ArrivalTime = DateTime.Now.AddDays(5).Date.AddHours(14),
-                        Price = 1299.99m,
-                        TotalSeats = 180,
-                        AircraftType = "SAA 737",
-                        Description = "Direct flight from CPT to JHB",
-                        IsActive = true
-                    },
-                    new Flight
-                    {
-                        FlightNumber = "UA202",
+                        FlightNumber = "SA101",
                         Origin = "Johannesburg",
                         Destination = "Cape Town",
-                        DepartureTime = DateTime.Now.AddDays(7).Date.AddHours(10),
-                        ArrivalTime = DateTime.Now.AddDays(7).Date.AddHours(14),
-                        Price = 1249.99m,
-                        TotalSeats = 150,
-                        AircraftType = "SAA A320",
-                        Description = "Non-stop from JHB to CPT",
+                        DepartureTime = DateTime.Now.AddDays(5).Date.AddHours(8),
+                        ArrivalTime = DateTime.Now.AddDays(5).Date.AddHours(10).AddMinutes(30),
+                        Price = 2499.00m,
+                        TotalSeats = 180,
+                        AircraftType = "SAA 737",
+                        Description = "Direct flight from JNB to CPT",
                         IsActive = true
                     },
                     new Flight
                     {
-                        FlightNumber = "DL303",
-                        Origin = "Bloemfontein",
-                        Destination = "Durban",
-                        DepartureTime = DateTime.Now.AddDays(10).Date.AddHours(6),
-                        ArrivalTime = DateTime.Now.AddDays(10).Date.AddHours(11),
-                        Price = 1349.99m,
-                        TotalSeats = 200,
-                        AircraftType = "FlySafair 757",
-                        Description = "Morning flight from BLM to DBN",
-                        IsActive = true
-                    },
-                    new Flight
-                    {
-                        FlightNumber = "SW404",
+                        FlightNumber = "SA202",
                         Origin = "Durban",
                         Destination = "Johannesburg",
-                        DepartureTime = DateTime.Now.AddDays(3).Date.AddHours(15),
-                        ArrivalTime = DateTime.Now.AddDays(3).Date.AddHours(17),
-                        Price = 1179.99m,
-                        TotalSeats = 140,
-                        AircraftType = "AirLink 737",
-                        Description = "Afternoon service from DBN to JHB",
+                        DepartureTime = DateTime.Now.AddDays(7).Date.AddHours(10),
+                        ArrivalTime = DateTime.Now.AddDays(7).Date.AddHours(11).AddMinutes(30),
+                        Price = 1899.00m,
+                        TotalSeats = 150,
+                        AircraftType = "FlySafair A320",
+                        Description = "Non-stop from DUR to JNB",
                         IsActive = true
                     },
                     new Flight
                     {
-                        FlightNumber = "BA505",
-                        Origin = "Durban",
-                        Destination = "Cape Town",
+                        FlightNumber = "SA303",
+                        Origin = "Cape Town",
+                        Destination = "Durban",
+                        DepartureTime = DateTime.Now.AddDays(10).Date.AddHours(6),
+                        ArrivalTime = DateTime.Now.AddDays(10).Date.AddHours(8).AddMinutes(30),
+                        Price = 2799.00m,
+                        TotalSeats = 200,
+                        AircraftType = "SAA 757",
+                        Description = "Morning flight from CPT to DUR",
+                        IsActive = true
+                    },
+                    new Flight
+                    {
+                        FlightNumber = "SA404",
+                        Origin = "Port Elizabeth",
+                        Destination = "Johannesburg",
+                        DepartureTime = DateTime.Now.AddDays(3).Date.AddHours(15),
+                        ArrivalTime = DateTime.Now.AddDays(3).Date.AddHours(16).AddMinutes(45),
+                        Price = 1599.00m,
+                        TotalSeats = 140,
+                        AircraftType = "SAA 737",
+                        Description = "Afternoon service from PLZ to JNB",
+                        IsActive = true
+                    },
+                    new Flight
+                    {
+                        FlightNumber = "SA505",
+                        Origin = "Johannesburg",
+                        Destination = "George",
                         DepartureTime = DateTime.Now.AddDays(14).Date.AddHours(9),
-                        ArrivalTime = DateTime.Now.AddDays(14).Date.AddHours(15),
-                        Price = 2399.99m,
+                        ArrivalTime = DateTime.Now.AddDays(14).Date.AddHours(11).AddMinutes(15),
+                        Price = 2199.00m,
                         TotalSeats = 160,
                         AircraftType = "FlySafair A321",
-                        Description = "Cross-country flight from DBN to CPT",
+                        Description = "Scenic flight from JNB to GRJ",
                         IsActive = true
                     }
                 };

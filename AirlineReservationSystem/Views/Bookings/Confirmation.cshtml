@@ -13,7 +13,7 @@
                 <h1 class="text-success">Booking Confirmed!</h1>
                 <p class="lead">Thank you for choosing SkyWings Airlines</p>
             </div>
-            
+
             <div class="card shadow">
                 <div class="card-header bg-success text-white">
                     <h4 class="mb-0">Booking Reference: @Model.BookingReference</h4>
@@ -45,7 +45,7 @@
                                 </tr>
                             </table>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <h5 class="text-primary mb-3">Passenger & Seat</h5>
                             <table class="table table-borderless">
@@ -72,20 +72,20 @@
                             </table>
                         </div>
                     </div>
-                    
+
                     <hr />
-                    
+
                     <div class="row mt-4">
                         <div class="col-md-6">
                             <h5>Status: <span class="badge bg-success">@Model.Status</span></h5>
                         </div>
                         <div class="col-md-6 text-end">
-                            <h4>Total Paid: <span class="text-success">$@Model.TotalPrice.ToString("N2")</span></h4>
+                            <h4>Total Paid: <span class="text-success">R @Model.TotalPrice.ToString("N2")</span></h4>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="alert alert-info mt-4">
                 <h5><i class="bi bi-info-circle"></i> Important Information</h5>
                 <ul class="mb-0">
@@ -95,7 +95,7 @@
                     <li>You can manage your booking from "My Bookings" section</li>
                 </ul>
             </div>
-            
+
             <div class="d-grid gap-2 mt-4">
                 <a asp-action="Index" class="btn btn-primary btn-lg">
                     <i class="bi bi-list"></i> View All My Bookings

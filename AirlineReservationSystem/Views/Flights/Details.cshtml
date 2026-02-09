@@ -10,7 +10,7 @@
             <a asp-action="Index" class="btn btn-outline-secondary mb-3">
                 <i class="bi bi-arrow-left"></i> Back to Search
             </a>
-            
+
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h3 class="mb-0"><i class="bi bi-airplane"></i> Flight @Model.FlightNumber</h3>
@@ -23,7 +23,7 @@
                             <h5>@Model.DepartureTime.ToString("MMM dd, yyyy")</h5>
                             <h4>@Model.DepartureTime.ToString("hh:mm tt")</h4>
                         </div>
-                        
+
                         <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
                             <div>
                                 <i class="bi bi-arrow-right-circle text-primary" style="font-size: 3rem;"></i>
@@ -32,7 +32,7 @@
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4 text-center">
                             <h2 class="text-primary">@Model.Destination</h2>
                             <p class="text-muted">Arrival</p>
@@ -40,9 +40,9 @@
                             <h4>@Model.ArrivalTime.ToString("hh:mm tt")</h4>
                         </div>
                     </div>
-                    
+
                     <hr />
-                    
+
                     <div class="row mt-4">
                         <div class="col-md-6">
                             <h5><i class="bi bi-info-circle"></i> Flight Information</h5>
@@ -61,11 +61,11 @@
                                 </tr>
                                 <tr>
                                     <td class="text-muted">Price:</td>
-                                    <td><h4 class="text-success mb-0">$@Model.Price.ToString("N2")</h4></td>
+                                    <td><h4 class="text-success mb-0">R @Model.Price.ToString("N2")</h4></td>
                                 </tr>
                             </table>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <h5><i class="bi bi-file-text"></i> Description</h5>
                             <p>@(Model.Description ?? "Comfortable flight with excellent service.")</p>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            
+
             @if (availableSeats.Any())
             {
                 <div class="card shadow mt-4">
@@ -88,7 +88,7 @@
                                 <span class="badge bg-secondary">Economy</span>
                             </div>
                         </div>
-                        
+
                         @foreach (var seatClass in availableSeats.GroupBy(s => s.SeatClass))
                         {
                             <div class="mb-4">
@@ -99,13 +99,16 @@
                                         <div class="col-auto">
                                             @if (User.Identity?.IsAuthenticated == true)
                                             {
-                                                <a asp-controller="Bookings" asp-action="Create" 
-                                                   asp-route-flightId="@Model.FlightId" 
+                                                <a asp-controller="Bookings" asp-action="Create"
+                                                   asp-route-flightId="@Model.FlightId"
                                                    asp-route-seatId="@seat.SeatId"
                                                    class="btn btn-sm @(seat.SeatClass == "First" ? "btn-primary" : seat.SeatClass == "Business" ? "btn-info" : "btn-secondary")"
                                                    title="@(seat.IsWindowSeat ? "Window Seat" : seat.IsAisleSeat ? "Aisle Seat" : "Middle Seat")">
                                                     @seat.SeatNumber
-                                                    @if (seat.IsWindowSeat) { <i class="bi bi-square"></i> }
+                                                    @if (seat.IsWindowSeat)
+                                                    {
+                                                        <i class="bi bi-square"></i>
+                                                    }
                                                 </a>
                                             }
                                             else
@@ -125,7 +128,7 @@
                                 </div>
                             </div>
                         }
-                        
+
                         @if (User.Identity?.IsAuthenticated != true)
                         {
                             <div class="alert alert-info mt-3">

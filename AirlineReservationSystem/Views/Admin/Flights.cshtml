@@ -17,7 +17,7 @@
             </a>
         </div>
     </div>
-    
+
     @if (!Model.Any())
     {
         <div class="alert alert-info">
@@ -50,7 +50,7 @@
                             <td>@flight.DepartureTime.ToString("MMM dd, hh:mm tt")</td>
                             <td>@flight.ArrivalTime.ToString("MMM dd, hh:mm tt")</td>
                             <td>@flight.AircraftType</td>
-                            <td>$@flight.Price.ToString("N2")</td>
+                            <td>R @flight.Price.ToString("N2")</td>
                             <td>@flight.AvailableSeats / @flight.TotalSeats</td>
                             <td>
                                 @if (flight.IsActive)
@@ -64,21 +64,21 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a asp-action="FlightDetails" asp-route-id="@flight.FlightId" 
+                                    <a asp-action="FlightDetails" asp-route-id="@flight.FlightId"
                                        class="btn btn-info" title="View">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a asp-action="EditFlight" asp-route-id="@flight.FlightId" 
+                                    <a asp-action="EditFlight" asp-route-id="@flight.FlightId"
                                        class="btn btn-warning" title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <button type="button" class="btn btn-danger" title="Delete"
-                                            data-bs-toggle="modal" 
+                                            data-bs-toggle="modal"
                                             data-bs-target="#deleteModal@(flight.FlightId)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
-                                
+
                                 <!-- Delete Modal -->
                                 <div class="modal fade" id="deleteModal@(flight.FlightId)" tabindex="-1">
                                     <div class="modal-dialog">

@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <h2 class="mb-4"><i class="bi bi-ticket-perforated"></i> My Bookings</h2>
-            
+
             @if (!Model.Any())
             {
                 <div class="card shadow-sm">
@@ -40,7 +40,7 @@
                                     <h5 class="card-title">
                                         @booking.Flight?.FlightNumber - @booking.Flight?.Origin to @booking.Flight?.Destination
                                     </h5>
-                                    
+
                                     <div class="mb-3">
                                         <p class="mb-1">
                                             <i class="bi bi-calendar"></i>
@@ -56,22 +56,22 @@
                                         </p>
                                         <p class="mb-1">
                                             <i class="bi bi-cash"></i>
-                                            <strong>Total:</strong> <span class="text-success">$@booking.TotalPrice.ToString("N2")</span>
+                                            <strong>Total:</strong> <span class="text-success">R @booking.TotalPrice.ToString("N2")</span>
                                         </p>
                                     </div>
-                                    
+
                                     <div class="d-grid gap-2">
                                         <a asp-action="Details" asp-route-id="@booking.BookingId" class="btn btn-primary btn-sm">
                                             <i class="bi bi-eye"></i> View Details
                                         </a>
                                         @if (booking.Status == "Confirmed" && booking.Flight?.DepartureTime > DateTime.Now)
                                         {
-                                            <button type="button" class="btn btn-outline-danger btn-sm" 
-                                                    data-bs-toggle="modal" 
+                                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#cancelModal@(booking.BookingId)">
                                                 <i class="bi bi-x-circle"></i> Cancel Booking
                                             </button>
-                                            
+
                                             <!-- Cancel Modal -->
                                             <div class="modal fade" id="cancelModal@(booking.BookingId)" tabindex="-1">
                                                 <div class="modal-dialog">
